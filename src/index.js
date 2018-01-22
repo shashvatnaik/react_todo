@@ -39,7 +39,7 @@ class Main extends React.Component{
             }
     }
     loginhandler=()=>{
-        axios.post(`http://localhost:5497/login`,{email:this.state.emvalue,password:this.state.passvalue}).then((data)=>{console.log(data)}).catch((err)=>{console.log(err)});
+        axios.post(`http://localhost:5497/login`,{username:this.state.emvalue,password:this.state.passvalue}).then((data)=>{console.log(data)}).catch((err)=>{console.log(err)});
     };
 
     reghandler=()=>{

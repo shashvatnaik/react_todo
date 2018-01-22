@@ -4,6 +4,6 @@ body {
   font-family: sans-serif;
   background-color: #5CDB95;
 }
-.maindiv{
-
+.completed{
+  background-color: chartreuse;
 }

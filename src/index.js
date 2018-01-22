@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import allClasses from './classes';
 import axios from 'axios';
-import {BrowserRouter,NavLink,Route,Redirect} from 'react-router-dom';
-import jquery from 'jquery';
+import {BrowserRouter,Route,Redirect} from 'react-router-dom';
 import TodoApp from './todoApp';
 
 import registerServiceWorker from './registerServiceWorker';

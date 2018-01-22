@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import allClasses from './classes';
 import axios from 'axios';
-import {BrowserRouter,NavLink,Route} from 'react-router-dom';
+import {BrowserRouter,NavLink,Route,Redirect} from 'react-router-dom';
+import jquery from 'jquery';
+import TodoApp from './todoApp';
 
 import registerServiceWorker from './registerServiceWorker';
 
@@ -39,7 +41,23 @@ class Main extends React.Component{
             }
     }
     loginhandler=()=>{
-        axios.post(`http://localhost:5497/login`,{username:this.state.emvalue,password:this.state.passvalue}).then((data)=>{console.log(data)}).catch((err)=>{console.log(err)});
+        let temp1=[],temp2;
+        axios.post(`http://localhost:5497/login`,{username:this.state.emvalue,password:this.state.passvalue}).then((data)=>{
+            console.log(data);
+            for(let i in data.data.sessions){
+                temp1.push(data.data.sessions[i]);
+            }
+            console.log(temp1);
+            temp2=temp1[temp1.length-2].length<90 ? temp1[temp1.length-1]:temp1[temp1.length-2];
+            console.log(`*********************************`);
+            console.log(temp2);
+            console.log(`*********************************`);
+            temp2=JSON.parse(temp2).passport.user;
+            console.log(temp2);
+            localStorage.setItem("user",temp2);
+            this.setState({isAuthenticated:true});
+        }).catch((err)=>{console.log(err)});
+
     };
 
     reghandler=()=>{
@@ -58,7 +76,7 @@ class Main extends React.Component{
 
     render(){
         return(
-            this.state.reg ?  <div style={{margin: "100px 500px"}} className={allClasses.greenback}>
+            localStorage.user ? <Redirect to="/todoapp"/> : this.state.reg ?  <div style={{margin: "100px 500px"}} className={allClasses.greenback}>
                 <center><h3 className={allClasses.subheader}>Login</h3><br/>
                     <input className={allClasses.inp} type="text" value={this.state.emvalue}
                            placeholder="enter your email" onChange={(e) => {
@@ -107,7 +125,10 @@ class Main extends React.Component{
 }
 ReactDOM.render(<div><Head/>
     <BrowserRouter>
+        <div>
         <Route path="/" component={Main}/>
+        <Route path="/todoapp" component={TodoApp}/>
+        </div>
     </BrowserRouter>
     <Tail/></div>, document.getElementById('root'));
 registerServiceWorker();
